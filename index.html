@@ -60,6 +60,10 @@
       flex-direction: column;
       margin-top: 10px;
     }
+    .input-group label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
     .input-group input {
       margin: 5px 0;
       padding: 10px;
@@ -75,13 +79,13 @@
 
 <p style="margin-top: 20px; font-weight: bold;">چونە ژوەرەوە هەڵبژێرەت:</p>
 <div class="login-buttons">
-  <button onclick="showLogin('Twitter')">
-    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" />
-    Twitter
-  </button>
   <button onclick="showLogin('Gmail')">
     <img src="https://cdn-icons-png.flaticon.com/512/281/281769.png" alt="Gmail" />
     Gmail
+  </button>
+  <button onclick="showLogin('Twitter')">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" />
+    Twitter
   </button>
   <button onclick="showLogin('Facebook')">
     <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" />
@@ -90,6 +94,7 @@
 </div>
 
 <div class="input-group" id="loginInputs">
+  <label id="loginTypeLabel"></label>
   <input type="text" id="user" placeholder="Email or Phone" />
   <input type="password" id="pass" placeholder="Password" />
   <button onclick="submitForm()">Continue</button>
@@ -112,6 +117,7 @@
       }
       selectedMethod = method;
       document.getElementById('loginInputs').style.display = 'flex';
+      document.getElementById('loginTypeLabel').textContent = `Login with ${method}`;
     }
 
     function submitForm() {
